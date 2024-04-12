@@ -28,19 +28,12 @@
    let from, to;
    let targetElementId;
 
+   $: console.log(isDragging);
+
    function moveItem() {
-      // Remove the item at indexA
       const item = LIST.splice(from, 1)[0];
 
-      if (position === 'down') {
-         // Insert the removed item at indexB
-         // console.log('Moved down');
-         LIST.splice(to, 0, item);
-      }
-
-      if (position === 'up') {
-         // Insert the removed item at to + 1
-         // console.log('Moved up');
+      if (position) {
          LIST.splice(to, 0, item);
       }
 
@@ -55,10 +48,9 @@
       // console.log('rect', placeholderRect);
 
       node.addEventListener('mousemove', (event) => {
-         if (
-            isDragging && 
-            from != LIST.indexOf(LIST.find(v => v.id == node.dataset.itemId))
-         ) {
+         const thisId = LIST.indexOf(LIST.find(v => v.id == node.dataset.itemId));
+
+         if (isDragging && from != thisId) {
             // console.log(from, to);
             // console.log(node.dataset.itemId, LIST[to].id, targetElementId);
 
@@ -143,9 +135,8 @@
 
       document.addEventListener('mousemove', (event) => {
          if (isDragging) {
-            const elementHeight = parseInt(getComputedStyle(placeholder).height.match(/\d+/g)[0]);
-            // console.log('HIEGHT', event.clientY);
             mouseY = event.clientY;
+            const elementHeight = parseInt(getComputedStyle(placeholder).height.match(/\d+/g)[0]);
             placeholder.style.top = `${event.clientY - elementHeight + 10}px`;
             placeholder.style.left = `${event.clientX - 60}px`;
          }
