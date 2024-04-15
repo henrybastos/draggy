@@ -1,5 +1,5 @@
 <script>
-   import { onMount, getContext } from "svelte";
+   import { onMount, getContext, createEventDispatcher } from "svelte";
    // let isDragging = getContext('isDragging');
    let from = getContext('from');
    let list = getContext('list');
@@ -11,6 +11,7 @@
    export let isDraggable = true;
 
    const thisList = $list.find(v => v.context_id == item.context_id).list;
+   const dispatch = createEventDispatcher();
    let to;
    let targetList;
    let position;
@@ -34,6 +35,7 @@
 
       // To update the list
       $list = $list;
+      dispatch('draggychange', { item: $targetItem, from_list: fromList, to_list: targetList });
       // console.log(`From ${$from} to ${to}`);
    }
 
@@ -66,14 +68,16 @@
          }
       })
 
-      node.addEventListener('mousedown', () => {
-         const index = thisList.indexOf(thisList.find(_item => _item.id == node.dataset.draggyId));
-         // const nodeClone = node.cloneNode(true);
-         
-         // $from = index;
-         $targetItem = thisList[index];
-         // console.log(`Set $from ${$from}`);
-      });
+      if (isDraggable) {
+         node.addEventListener('mousedown', () => {
+            const index = thisList.indexOf(thisList.find(_item => _item.id == node.dataset.draggyId));
+            // const nodeClone = node.cloneNode(true);
+            
+            // $from = index;
+            $targetItem = thisList[index];
+            // console.log(`Set $from ${$from}`);
+         });
+      }
 
       node.addEventListener('mouseover', () => {
          const index = thisList.indexOf(thisList.find(v => v.id == node.dataset.draggyId));
@@ -103,12 +107,6 @@
    })
 </script>
 
-{#if isDraggable}   
-   <div use:draggable data-draggy-id={item.id} data-draggy-context={item.context_id}>
-      <slot />
-   </div>
-{:else}
-   <div data-draggy-id={item.id} data-draggy-context={item.context_id}>
-      <slot />
-   </div>
-{/if}
+<div data-draggy-member="draggy_item" use:draggable data-draggy-id={item.id} data-draggy-context={item.context_id}>
+   <slot />
+</div>
