@@ -67,6 +67,6 @@
    })
 </script>
 
-<div data-draggy-member="draggy_root">
+<div class={$$restProps?.class || ''} data-draggy-member="draggy_root">
    <slot list={$_list} />
 </div>

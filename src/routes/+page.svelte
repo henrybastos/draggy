@@ -5,12 +5,12 @@
    import DraggyPlaceholder from "$lib/DraggyPlaceholder.svelte";
 
    let rocketLeagueCarsList = {
-      meta: [
+      'Meta Cars': [
          'Fennec',
          'Dominus',
          'Octane'
       ],
-      bleh: [
+      'Kinda Rejected Cars': [
          'Animus GP',
          'Endo',
          'Scarab',
@@ -25,9 +25,9 @@
    <title>Draggy</title>
 </svelte:head>
 
-<Draggy let:list bind:list={rocketLeagueCarsList}>
+<Draggy class="flex flex-row" let:list bind:list={rocketLeagueCarsList}>
    {#each list as singleList}
-      <div class="relative flex flex-col gap-4 m-6 p-4 border-2 border-neutral-700 rounded-md">
+      <div class="relative flex flex-col w-[20rem] gap-4 m-6 p-4 border-2 border-neutral-700 rounded-md">
          <h2>{ singleList.context_id }</h2>
    
             {#each singleList.list as item}   
