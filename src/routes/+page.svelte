@@ -25,14 +25,14 @@
    <title>Draggy</title>
 </svelte:head>
 
-<Draggy class="flex flex-row" let:list bind:list={rocketLeagueCarsList}>
+<Draggy class="flex flex-row h-[100rem]" let:list bind:list={rocketLeagueCarsList}>
    {#each list as singleList}
       <div class="relative flex flex-col w-[20rem] gap-4 m-6 p-4 border-2 border-neutral-700 rounded-md">
          <h2>{ singleList.context_id }</h2>
    
             {#each singleList.list as item}   
                <DraggyItem {item}>
-                  <div class="drag_me_li relative select-none p-6 border-2 border-neutral-800 rounded-lg">
+                  <div class="drag_me_li relative p-6 border-2 border-neutral-800 rounded-lg">
                      <i data-draggy-grab class="ti ti-menu-2 mr-3 cursor-grab"></i>
                      {item.data}
                   </div>
@@ -46,7 +46,7 @@
    {/each}
 
    <DraggyPlaceholder offset={{ x: -26 }}>
-      <div class="relative w-[20rem] select-none p-6 border-2 border-neutral-800 rounded-lg bg-black bg-opacity-75">
+      <div class="w-[20rem] p-6 border-2 border-neutral-800 rounded-lg bg-black bg-opacity-75">
          <i data-draggy-grab class="ti ti-menu-2 mr-3 cursor-grab"></i>
          Operation
       </div>

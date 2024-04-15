@@ -56,12 +56,14 @@
       document.addEventListener('mouseup', () => {
          $isDragging = false;
          document.body.style.cursor = defaultCursor;
+         document.body.style.userSelect = 'auto';
       });
 
       document.addEventListener('mousedown', (event) => {
          if (event.target.dataset.draggyGrab !== undefined) {
             $isDragging = true;
             document.body.style.cursor = 'grabbing';
+            document.body.style.userSelect = 'none';
          }
       });
    })
