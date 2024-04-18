@@ -11,12 +11,14 @@
    const thisList = $list.find(v => v.context_id == item.context_id).list;
    const dispatch = createEventDispatcher();
    let thisNode;
+   let thisLastItem = null;
    let to;
    let targetList;
    let position;
    let mouseY;
    let fromList;
    let fromIndex;
+   let dragEnabled = true; // Solves flickering problem
 
    // $: console.log($from, to);
    $: {
@@ -30,20 +32,23 @@
    };
 
    function moveItem() {
-      $targetItem.context_id = targetList.context_id;
-      
-      // Delete item from its origin list
-      fromList.splice(fromIndex, 1);
-
-      if (position) {
-         // Add item to the targeted list
-         targetList.list.splice(to, 0, $targetItem);
+      if (dragEnabled) {
+         dragEnabled = false;
+         $targetItem.context_id = targetList.context_id;
+         
+         // Delete item from its origin list
+         fromList.splice(fromIndex, 1);
+   
+         if (position) {
+            // Add item to the targeted list
+            targetList.list.splice(to, 0, $targetItem);
+         }
+   
+         // To update the list
+         $list = $list;
+         dispatch('draggychange', { item: $targetItem, from_list: fromList, to_list: targetList });
+         setTimeout(() => dragEnabled = true, 150)
       }
-
-      // To update the list
-      $list = $list;
-      console.log('Shit');
-      dispatch('draggychange', { item: $targetItem, from_list: fromList, to_list: targetList });
    }
 
    function draggable(node) {
@@ -68,7 +73,6 @@
                      moveItem();
                   }
                }
-
             }
          }
       })
@@ -86,11 +90,13 @@
 
          if ($isDragging) {
             to = index;
+
             targetList = $list.find(v => v.context_id == node.dataset.draggyContext);
          }
       })
 
       node.addEventListener('mouseleave', () => {
+         thisLastItem = null;
          position = null;
       });
    }

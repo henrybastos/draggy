@@ -14,6 +14,10 @@
    setContext('isDragging', isDragging);
    setContext('targetItem', targetItem);
 
+   $: {
+      list = undraggify($_list);
+   };
+
    function draggify (lists) {
       let newList = [];
 
@@ -41,20 +45,12 @@
          };
       }
 
-      // console.dir(parsedObject, { depth: null });
-      // console.log(JSON.stringify(parsedObject, null, 3));
       return parsedObject;
    }
 
    export function update () {
       $_list = draggify(list);
-      console.log('Dragify');
    }
-
-   $: {
-      list = undraggify($_list);
-      console.log('Undragify');
-   };
    
    onMount(() => {
       const defaultCursor = document.body.style.cursor;
@@ -76,5 +72,5 @@
 </script>
 
 <div class={$$restProps?.class || ''} data-draggy-member="draggy_root">
-   <slot list={$_list} />
+   <slot {update} list={$_list} />
 </div>
