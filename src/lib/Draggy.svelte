@@ -46,8 +46,14 @@
       return parsedObject;
    }
 
+   export function update () {
+      $_list = draggify(list);
+      console.log('Dragify');
+   }
+
    $: {
       list = undraggify($_list);
+      console.log('Undragify');
    };
    
    onMount(() => {

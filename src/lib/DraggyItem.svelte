@@ -42,6 +42,7 @@
 
       // To update the list
       $list = $list;
+      console.log('Shit');
       dispatch('draggychange', { item: $targetItem, from_list: fromList, to_list: targetList });
    }
 
