@@ -15,6 +15,7 @@
    setContext('targetItem', targetItem);
    setContext('deleteItem', deleteItem);
    setContext('addItem', addItem);
+   setContext('addList', addList);
 
    $: {
       list = undraggify($_list);
@@ -65,7 +66,21 @@
          data: content
       });
       // console.log($_list.find(list => list.context_id === contextID).list);
+      console.log($_list);
       $_list = $_list;
+   }
+
+   export function addList (contextID) {
+      if (!$_list.find(list => list.context_id === contextID)) {
+         console.log('Creating list with the Context ID of ', contextID);
+         $_list.push({
+            context_id: contextID,
+            list: []
+         })
+         $_list = $_list;
+      } else {
+         console.log('[CREATE_LIST_FAIL] List already exists: ', $_list.find(list => list.context_id === contextID));
+      }
    }
    
    onMount(() => {

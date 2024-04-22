@@ -1,9 +1,13 @@
 <script>
-   import { onMount, getContext, createEventDispatcher } from "svelte";
+   import { onMount, getContext, createEventDispatcher, setContext } from "svelte";
+   import { writable } from "svelte/store";
    // let isDragging = getContext('isDragging');
    let list = getContext('list');
    let isDragging = getContext('isDragging');
    let targetItem = getContext('targetItem');
+   let isDragActive = writable(false);
+
+   setContext('isDragActive', isDragActive);
 
    export let item;
    export let isDraggable = true;
@@ -25,8 +29,10 @@
       if(thisNode && $targetItem) {
          if ($isDragging && $targetItem.id === thisNode.dataset.draggyId) {
             thisNode.firstChild.dataset.draggyActive = '';
+            $isDragActive = true;
          } else {
             delete thisNode.firstChild.dataset.draggyActive;
+            $isDragActive = false;
          }
       }
    };
