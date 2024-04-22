@@ -13,6 +13,8 @@
    setContext('list', _list);
    setContext('isDragging', isDragging);
    setContext('targetItem', targetItem);
+   setContext('deleteItem', deleteItem);
+   setContext('addItem', addItem);
 
    $: {
       list = undraggify($_list);
@@ -48,8 +50,22 @@
       return parsedObject;
    }
 
-   export function update () {
-      $_list = draggify(list);
+   export function deleteItem (contextID, itemID) {
+      let thisList = $_list.find(list => list.context_id === contextID).list
+      // console.log(contextID, thisList.find(op => op.id === itemID));
+      thisList = thisList.filter(op => op.id !== itemID);
+      $_list.find(list => list.context_id === contextID).list = thisList;
+      $_list = $_list;
+   }
+
+   export function addItem (contextID, content) {
+      $_list.find(list => list.context_id === contextID).list.push({
+         id: `id_${Math.random().toString().slice(2,10)}`,
+         context_id: contextID,
+         data: content
+      });
+      // console.log($_list.find(list => list.context_id === contextID).list);
+      $_list = $_list;
    }
    
    onMount(() => {
@@ -72,5 +88,5 @@
 </script>
 
 <div class={$$restProps?.class || ''} data-draggy-member="draggy_root">
-   <slot {update} list={$_list} />
+   <slot list={$_list} />
 </div>
