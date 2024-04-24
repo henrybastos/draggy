@@ -70,17 +70,27 @@
       $_list = $_list;
    }
 
+   export function setList (updated_list) {
+      console.log('[OLD]', $_list);
+      $_list = draggify(updated_list);
+      console.log('[NEW]', $_list);
+   }
+
    export function addList (contextID) {
       if (!$_list.find(list => list.context_id === contextID)) {
-         console.log('Creating list with the Context ID of ', contextID);
+         // console.log('Creating list with the Context ID of ', contextID);
          $_list.push({
             context_id: contextID,
             list: []
          })
          $_list = $_list;
       } else {
-         console.log('[CREATE_LIST_FAIL] List already exists: ', $_list.find(list => list.context_id === contextID));
+         // console.log('[CREATE_LIST_FAIL] List already exists: ', $_list.find(list => list.context_id === contextID));
       }
+   }
+
+   export function deleteList (contextID) {
+      $_list = $_list.filter(list => list.context_id !== contextID);
    }
    
    onMount(() => {
