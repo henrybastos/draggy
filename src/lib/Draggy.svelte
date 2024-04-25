@@ -7,6 +7,7 @@
    let from = writable();
    let _list = writable(draggify(list));
    let isDragging = writable(false);
+   let updateACC = writable(0);
    let targetItem = writable();
 
    setContext('from', from);
@@ -16,6 +17,7 @@
    setContext('deleteItem', deleteItem);
    setContext('addItem', addItem);
    setContext('addList', addList);
+   setContext('updateUI', updateUI);
 
    $: {
       list = undraggify($_list);
@@ -56,7 +58,7 @@
       // console.log(contextID, thisList.find(op => op.id === itemID));
       thisList = thisList.filter(op => op.id !== itemID);
       $_list.find(list => list.context_id === contextID).list = thisList;
-      $_list = $_list;
+      updateUI();
    }
 
    export function addItem (contextID, content) {
@@ -67,7 +69,7 @@
       });
       // console.log($_list.find(list => list.context_id === contextID).list);
       console.log($_list);
-      $_list = $_list;
+      updateUI();
    }
 
    export function setList (updated_list) {
@@ -83,7 +85,7 @@
             context_id: contextID,
             list: []
          })
-         $_list = $_list;
+         updateUI();
       } else {
          // console.log('[CREATE_LIST_FAIL] List already exists: ', $_list.find(list => list.context_id === contextID));
       }
@@ -91,6 +93,12 @@
 
    export function deleteList (contextID) {
       $_list = $_list.filter(list => list.context_id !== contextID);
+   }
+
+   export function updateUI () {
+      $updateACC++;
+      $_list = $_list;
+      // console.log('Update');
    }
    
    onMount(() => {
@@ -112,6 +120,8 @@
    })
 </script>
 
-<div class={$$restProps?.class || ''} data-draggy-member="draggy_root">
-   <slot list={$_list} />
-</div>
+{#key $updateACC}   
+   <div class={$$restProps?.class || ''} data-draggy-member="draggy_root">
+      <slot update={updateUI} list={$_list} />
+   </div>
+{/key}
