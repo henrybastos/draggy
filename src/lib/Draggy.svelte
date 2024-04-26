@@ -21,6 +21,7 @@
 
    $: {
       list = undraggify($_list);
+      updateUI();
    };
 
    function draggify (lists) {
@@ -67,15 +68,12 @@
          context_id: contextID,
          data: content
       });
-      // console.log($_list.find(list => list.context_id === contextID).list);
       console.log($_list);
       updateUI();
    }
 
    export function setList (updated_list) {
-      console.log('[OLD]', $_list);
       $_list = draggify(updated_list);
-      console.log('[NEW]', $_list);
    }
 
    export function addList (contextID) {
