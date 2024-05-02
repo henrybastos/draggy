@@ -21,8 +21,6 @@
 
    $: {
       list = undraggify($_list);
-      // Disabled due to performance issues
-      // updateUI();
    };
 
    function draggify (lists) {
