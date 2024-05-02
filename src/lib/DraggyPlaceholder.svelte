@@ -9,7 +9,7 @@
    onMount(() => {
       
       document.addEventListener('mousemove', (event) => {
-         if ($isDragging) {
+         if ($isDragging && placeholder) {
             // Auto center cursor attempt
             // const grabElementRect = placeholder.querySelector('[data-draggy-grab]').getBoundingClientRect();
             // const placeholderRect = placeholder.getBoundingClientRect();
